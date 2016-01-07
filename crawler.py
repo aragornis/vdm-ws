@@ -4,7 +4,6 @@ import re
 import json
 import sys
 
-library_file = 'posts.json'
 regex = re.compile('<div class="post article" id="\d+"><p>(.*?)<\/p><div class="date"><div class="left_part">.*?<p>Le ([^-]*?) - .*? - par (.*?)(\(<a.*?<\/a>\))?<\/p><\/div>', re.MULTILINE)
 
 def download_page(page_index):
@@ -37,6 +36,7 @@ def crawl(nb_requested):
 if __name__ == "__main__":
     # Parse arguments
     nb_requested_posts = int(sys.argv[1])
+    library_file = sys.argv[2] or 'posts.json'
 
     # Start crawling
     content = crawl(nb_requested_posts)
