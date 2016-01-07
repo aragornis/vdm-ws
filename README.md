@@ -4,4 +4,4 @@
 
 pip install Flask
 python crawler.py 200 posts.json
-python server.py
+python server.py posts.json --debug
