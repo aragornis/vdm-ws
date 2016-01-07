@@ -33,6 +33,11 @@ def crawl(nb_requested):
     del results[nb_requested:]
     return results
 
+def save_posts(file, content):
+    with open(file, 'w') as f:
+        f.truncate()
+        json.dump(content, f, ensure_ascii=False)
+
 if __name__ == "__main__":
     # Parse arguments
     nb_requested_posts = int(sys.argv[1])
@@ -42,8 +47,6 @@ if __name__ == "__main__":
     posts = crawl(nb_requested_posts)
 
     # Save posts to a raw json file
-    with open(library_file, 'w') as f:
-        f.truncate()
-        json.dump(posts, f, ensure_ascii=False)
+    save_posts(library_file, posts)
 
     print("%s posts have been parsed and saved to %s" % (len(posts), library_file))
