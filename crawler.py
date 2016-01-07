@@ -36,7 +36,7 @@ def crawl(nb_requested):
 def save_posts(file, content):
     with open(file, 'w') as f:
         f.truncate()
-        json.dump(content, f, ensure_ascii=False)
+        json.dump(content, f)
 
 if __name__ == "__main__":
     # Parse arguments
