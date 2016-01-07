@@ -39,11 +39,11 @@ if __name__ == "__main__":
     library_file = sys.argv[2] or 'posts.json'
 
     # Start crawling
-    content = crawl(nb_requested_posts)
+    posts = crawl(nb_requested_posts)
 
-    # Save content to a raw json file
+    # Save posts to a raw json file
     with open(library_file, 'w') as f:
         f.truncate()
-        json.dump(content, f, ensure_ascii=False)
+        json.dump(posts, f, ensure_ascii=False)
 
-    print("%s posts have been parsed and saved to %s" % (len(content), library_file))
+    print("%s posts have been parsed and saved to %s" % (len(posts), library_file))
