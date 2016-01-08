@@ -4,7 +4,7 @@ import re
 import json
 import sys
 
-regex = re.compile('<div class="post article" id="\d+"><p>(.*?)<\/p><div class="date"><div class="left_part">.*?<p>Le ([^-]*?) - .*? - par (.*?)(\(<a.*?<\/a>\))?<\/p><\/div>', re.MULTILINE)
+regex = re.compile('<div class="post article" id="\d+"><p>(.*?)<\/p><div class="date"><div class="left_part">.*?<p>Le ([^-]*?) - .*? - par (.*?) (\(<a.*?<\/a>\))?<\/p><\/div>', re.MULTILINE)
 
 def download_page(page_index):
     return urlopen("http://www.viedemerde.fr/?page=%s" % page_index).read().decode('utf-8')
