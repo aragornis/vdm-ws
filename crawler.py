@@ -40,8 +40,8 @@ def save_posts(file, content):
 
 if __name__ == "__main__":
     # Parse arguments
-    nb_requested_posts = int(sys.argv[1])
-    library_file = sys.argv[2] or 'posts.json'
+    nb_requested_posts = int(sys.argv[1]) if len(sys.argv) > 1 else 10
+    library_file = sys.argv[2] if len(sys.argv) > 2 else "posts.json"
 
     # Start crawling
     posts = crawl(nb_requested_posts)
