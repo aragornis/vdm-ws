@@ -7,16 +7,16 @@ from dateutil import tz
 
 class ParserTests(unittest.TestCase):
     def setUp(self):
-        self._parser = Parser()
+        self.__parser = Parser()
 
     def test_empty(self):
-        result = self._parser.parse('')
+        result = self.__parser.parse('')
         self.assertEqual(len(result), 0)
 
     def test_sample_page(self):
         with codecs.open(os.path.join(os.path.dirname(__file__), 'vdm_sample.html'), 'r', 'utf-8') as f:
             data = f.read()
-        result = self._parser.parse(data)
+        result = self.__parser.parse(data)
 
         self.assertEqual(len(result), 13)
 
