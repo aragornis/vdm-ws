@@ -27,14 +27,14 @@ class Posts:
         db_entry = self.db[id]
         return self.__createPost(db_entry) if db_entry is not None else None
 
-    def getPosts(self, from_date, to_date, author):
-        iterator = self.db
+    def getPosts(self, from_date = None, to_date = None, author = None):
+        iterator = self.db.filter()
         if from_date is not None:
-            iterator = iterator and (self.db("date") >= from_date)
+            iterator = iterator & (self.db("date") > from_date)
         if to_date is not None:
-            iterator = iterator and (self.db("date") <= to_date)
+            iterator = iterator & (self.db("date") < to_date)
         if author is not None:
-            iterator = iterator and (self.db("author") == author)
+            iterator = iterator & (self.db("author") == author)
 
         return [self.__createPost(db_entry) for db_entry in iterator]
 
