@@ -1,7 +1,7 @@
 from urllib.request import urlopen
 from html.parser import HTMLParser
+from posts.repository import *
 import re
-import json
 import sys
 
 regex = re.compile('<div class="post article" id="\d+"><p>(.*?)<\/p><div class="date"><div class="left_part">.*?<p>Le ([^-]*?) - .*? - par (.*?) (\(<a.*?<\/a>\))?<\/p><\/div>', re.MULTILINE)
@@ -11,7 +11,7 @@ def download_page(page_index):
 
 def create_post_from_match(match):
     parser = HTMLParser()
-    return {'id': 0, 'content': re.sub('<[^<]+?>', '', parser.unescape(match[0])), 'date': match[1], 'author': match[2]}
+    return Post(match[2], re.sub('<[^<]+?>', '', parser.unescape(match[0])), match[1])
 
 def parse_page(page):
     return [create_post_from_match(m) for m in regex.findall(page)]
@@ -33,20 +33,17 @@ def crawl(nb_requested):
     del results[nb_requested:]
     return results
 
-def save_posts(file, content):
-    with open(file, 'w') as f:
-        f.truncate()
-        json.dump(content, f)
-
 if __name__ == "__main__":
     # Parse arguments
     nb_requested_posts = int(sys.argv[1]) if len(sys.argv) > 1 else 10
-    library_file = sys.argv[2] if len(sys.argv) > 2 else "posts.json"
+    library_file = sys.argv[2] if len(sys.argv) > 2 else "posts.pdl"
 
     # Start crawling
     posts = crawl(nb_requested_posts)
+    repository = Posts(library_file, True)
 
-    # Save posts to a raw json file
-    save_posts(library_file, posts)
+    # Persist posts
+    for post in posts:
+        repository.addPost(post)
 
-    print("%s posts have been parsed and saved to %s" % (len(posts), library_file))
+    print("%s posts have been parsed and saved to %s" % (repository.getPostsCount(), library_file))
