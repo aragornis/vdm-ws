@@ -1,5 +1,5 @@
 from posts.repository import Post
-from html.parser import HTMLParser
+import html
 from dateutil import parser
 from dateutil import tz
 import re
@@ -15,8 +15,7 @@ class Parser:
         return Post(match[2], self.__cleanupDescription(match[0]), self.__parseDate(match[1]))
 
     def __cleanupDescription(self, desc):
-        parser = HTMLParser()
-        return re.sub('<[^<]+?>', '', parser.unescape(desc))
+        return re.sub('<[^<]*?>', '', html.unescape(desc))
 
     def __parseDate(self, date):
         return parser.parse(date.replace('\u00e0', ''), dayfirst = True).replace(tzinfo= tz.gettz('Europe/Paris'))

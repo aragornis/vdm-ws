@@ -6,6 +6,12 @@ python crawler.py [200] [posts.json] # Runs crawler
 python server.py [posts.json] [--debug] # Starts server
 ```
 
+## How to run tests
+
+```
+python -m unittest discover
+```
+
 ## How to run - using Python 3.5
 
 ```
