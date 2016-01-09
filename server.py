@@ -34,7 +34,7 @@ def get_post(id):
 
 if __name__ == "__main__":
      # Parse arguments
-    library_file = sys.argv[1] or 'posts.pdl'
+    library_file = sys.argv[1] if len(sys.argv) > 1 else "posts.pdl"
     debug = '--debug' in sys.argv
 
     # Load posts database
