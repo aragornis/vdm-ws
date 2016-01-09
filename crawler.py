@@ -1,36 +1,20 @@
 from urllib.request import urlopen
-from html.parser import HTMLParser
-from posts.repository import *
+from posts import repository
+from crawler.parser import Parser
 import re
 import sys
-from dateutil import parser
-from dateutil import tz
-
-regex = re.compile('<div class="post article" id="\d+"><p>(.*?)<\/p><div class="date"><div class="left_part">.*?<p>Le ([^-]*?) - .*? - par (.*?) (\(<a.*?<\/a>\))?<\/p><\/div>', re.MULTILINE)
 
 def download_page(page_index):
     return urlopen("http://www.viedemerde.fr/?page=%s" % page_index).read().decode('utf-8')
 
-def create_post_from_match(match):
-    return Post(match[2], cleanup_description(match[0]), parse_date(match[1]))
-
-def cleanup_description(desc):
-    parser = HTMLParser()
-    return re.sub('<[^<]+?>', '', parser.unescape(desc))
-
-def parse_date(date):
-    return parser.parse(date.replace('\u00e0', ''), dayfirst = True).replace(tzinfo= tz.gettz('Europe/Paris'))
-
-def parse_page(page):
-    return [create_post_from_match(m) for m in regex.findall(page)]
-
 def crawl(nb_requested):
     results = []
     current_page_index = 0
+    parser = Parser()
 
     while len(results) < nb_requested:
         current_page = download_page(current_page_index)
-        new_results = parse_page(current_page)
+        new_results = parser.parse(current_page)
 
         if len(new_results) == 0:
             raise StopIteration("Empty page found, aborting crawling")
@@ -48,7 +32,7 @@ if __name__ == "__main__":
 
     # Start crawling
     posts = crawl(nb_requested_posts)
-    repository = Posts(library_file, True)
+    repository = repository.Posts(library_file, True)
 
     # Persist posts
     for post in posts:
