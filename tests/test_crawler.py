@@ -1,10 +1,5 @@
 import unittest
-import os
-import codecs
-from crawler.parser import Parser
 from crawler.crawler import Crawler
-from datetime import datetime
-from dateutil import tz
 
 class FetcherMock():
     def __init__(self, contentGenerator):
