@@ -3,6 +3,7 @@
 ## How to run - using Python 3.5
 
 ```
+pip install python-dateutil
 pip install pydblite
 pip install Flask
 python crawler.py 200 posts.json

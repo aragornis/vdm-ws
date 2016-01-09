@@ -3,6 +3,8 @@ from html.parser import HTMLParser
 from posts.repository import *
 import re
 import sys
+from dateutil import parser
+from dateutil import tz
 
 regex = re.compile('<div class="post article" id="\d+"><p>(.*?)<\/p><div class="date"><div class="left_part">.*?<p>Le ([^-]*?) - .*? - par (.*?) (\(<a.*?<\/a>\))?<\/p><\/div>', re.MULTILINE)
 
@@ -10,8 +12,14 @@ def download_page(page_index):
     return urlopen("http://www.viedemerde.fr/?page=%s" % page_index).read().decode('utf-8')
 
 def create_post_from_match(match):
+    return Post(match[2], cleanup_description(match[0]), parse_date(match[1]))
+
+def cleanup_description(desc):
     parser = HTMLParser()
-    return Post(match[2], re.sub('<[^<]+?>', '', parser.unescape(match[0])), match[1])
+    return re.sub('<[^<]+?>', '', parser.unescape(desc))
+
+def parse_date(date):
+    return parser.parse(date.replace('\u00e0', ''), dayfirst = True).replace(tzinfo= tz.gettz('Europe/Paris'))
 
 def parse_page(page):
     return [create_post_from_match(m) for m in regex.findall(page)]

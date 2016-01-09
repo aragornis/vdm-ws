@@ -1,4 +1,5 @@
 from pydblite import Base
+from datetime import datetime
 import json
 
 class Post:
@@ -8,8 +9,10 @@ class Post:
         self.content = content
         self.date = date
 
-    def toDict(self):
-        return self.__dict__
+    def toDisplayableDict(self):
+        dic = dict(self.__dict__)
+        dic['date'] = dic['date'].strftime('%Y-%m-%d %H:%M:%S')
+        return dic
 
 class Posts:
     def __init__(self, filename, erase_db):
@@ -22,15 +25,15 @@ class Posts:
 
     def getPost(self, id):
         db_entry = self.db[id]
-        return self.__createPost(db_entry) if db_entry != None else None
+        return self.__createPost(db_entry) if db_entry is not None else None
 
     def getPosts(self, from_date, to_date, author):
         iterator = self.db
-        if from_date != None:
+        if from_date is not None:
             iterator = iterator and (self.db("date") >= from_date)
-        if to_date != None:
+        if to_date is not None:
             iterator = iterator and (self.db("date") <= to_date)
-        if author != None:
+        if author is not None:
             iterator = iterator and (self.db("author") == author)
 
         return [self.__createPost(db_entry) for db_entry in iterator]
