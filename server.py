@@ -18,7 +18,7 @@ def get_all_posts():
     author = request.args.get('author', None)
 
     result = [p.toDisplayableDict() for p in repository.getPosts(fromDate, toDate, author)]
-    return jsonify(post = result, count = len(result))
+    return jsonify(posts = result, count = len(result))
 
 def tryParseDate(rawDate):
     if rawDate is not None:
