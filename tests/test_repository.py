@@ -8,6 +8,7 @@ post2 = Post(2, 1, datetime(2015, 11, 2))
 
 class CrawlerTests(unittest.TestCase):
     def setUp(self):
+        # Open non-persisted db
         self.__repository = Posts(':memory:', True)
         self.__repository.addPost(post1)
         self.__repository.addPost(post2)
@@ -19,6 +20,7 @@ class CrawlerTests(unittest.TestCase):
     def test_getPost(self):
         self.assertPostEqual(self.__repository.getPost(0), post1)
         self.assertPostEqual(self.__repository.getPost(1), post2)
+        self.assertEqual(self.__repository.getPost(5), None) # Non-existing post id returns None
 
     def test_getPosts_no_query(self):
         posts = self.__repository.getPosts()

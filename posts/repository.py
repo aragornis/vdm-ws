@@ -24,7 +24,7 @@ class Posts:
         self.db.commit()
 
     def getPost(self, id):
-        db_entry = self.db[id]
+        db_entry = self.db[id] if id in self.db else None
         return self.__createPost(db_entry) if db_entry is not None else None
 
     def getPosts(self, from_date = None, to_date = None, author = None):
