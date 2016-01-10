@@ -12,6 +12,7 @@ server = Flask(__name__)
 
 @server.route("/api/posts")
 def get_all_posts():
+    """ Returns all posts, possibly filtered by author, min date or max date. """
     fromDate = tryParseDate(request.args.get('from', None))
     toDate = tryParseDate(request.args.get('to', None))
     author = request.args.get('author', None)
@@ -28,6 +29,7 @@ def tryParseDate(rawDate):
 
 @server.route("/api/post/<id>")
 def get_post(id):
+    """ Returns a post by its id. """
     post_id = int(id)
     result = repository.getPost(post_id)
     return jsonify(post = result.toDisplayableDict()) if result != None else abort(404)

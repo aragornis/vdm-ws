@@ -4,6 +4,9 @@ class Crawler:
         self.__parser = parser
 
     def crawl(self, nb_requested_posts):
+        """ Crawl as much pages as needed to return a list of nb_requested_posts Post objects.
+            Raise in case of network issue or when an empty page is found so as to avoid infinite loop
+        """
         results = []
         current_page_index = 0
 

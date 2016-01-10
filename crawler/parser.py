@@ -5,10 +5,12 @@ from dateutil import tz
 import re
 
 class Parser:
+    """ Provide parsing of a vdm page to a list of embed posts as Post objects. """
     def __init__(self):
         self.__regex = re.compile('<div class="post article" id="\d+"><p>(.*?)<\/p><div class="date"><div class="left_part">.*?<p>Le ([^-]*?) - .*? - par (.*?) (\(<a.*?<\/a>\))?<\/p><\/div>', re.MULTILINE)
 
     def parse(self, page):
+        """ Parse provided page represented as a string and return contained posts as a list of Post objects. """
         return [self.__createPostFromMatch(m) for m in self.__regex.findall(page)]
 
     def __createPostFromMatch(self, match):
