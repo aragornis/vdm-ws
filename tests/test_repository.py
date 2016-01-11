@@ -6,7 +6,7 @@ from posts.repository import Post
 post1 = Post(0, 1, datetime(2015, 5, 5))
 post2 = Post(2, 1, datetime(2015, 11, 2))
 
-class CrawlerTests(unittest.TestCase):
+class PostsTests(unittest.TestCase):
     def setUp(self):
         # Open non-persisted db
         self.__repository = Posts(':memory:', True)
